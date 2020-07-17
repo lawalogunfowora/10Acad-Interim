@@ -1,3 +1,0 @@
-# 10Acad-Interim
-
-**MY CODE FOR INTERIM PROJECT: 10 ACADEMY**

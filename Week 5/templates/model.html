@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Sales Prediction</title>
+</head>
+<body>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="container2">
+        <canvas id="myLine"></canvas>
+    </div>
+</body>
+</html>
+<script>
+
+// Get the Canvas for the chart
+var myChart = document.getElementById('myChart').getContext('2d');
+var myLine = document.getElementById('myLine').getContext('2d');
+
+// creates the data for the chart from the data passed by flask
+var barData = {
+    labels: [
+        {% for item in labels %}
+            "{{ item }}",
+        {% endfor %}
+    ],
+
+    datasets: [{
+        data : [
+            {% for item in values %}
+                "{{ item }}",
+                {% endfor %}
+        ],
+        backgroundColor: [
+        {% for item in values %}
+            getRandomColor(),
+            {% endfor %}
+        ],
+        borderWidth: 2,
+        borderColor: '#777',
+        hoverBorderWidth: 3,
+        hoverBorderColor: '#000',
+    }]
+
+};
+
+// Creates the Bar chart
+new Chart(myChart, {
+    type : 'bar',
+    data : barData,
+    options : {
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Sales prediction for each store',
+            fontSize: 25,
+        },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Sales'
+                    }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Stores'
+                    }
+            }]
+  }
+    },
+});
+
+var lineData = {
+    labels: [
+        {% for item in linelabels %}
+            "{{ item }}",
+        {% endfor %}
+    ],
+
+    datasets: [{
+        data : [
+            {% for item in linevalues %}
+                "{{ item }}",
+                {% endfor %}
+        ],
+        backgroundColor: [
+        {% for item in linevalues %}
+            getRandomColor(),
+            {% endfor %}
+        ],
+    }]
+
+};
+
+// Creates the Line chart
+new Chart(myLine, {
+    type : 'line',
+    data : lineData,
+    options : {
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        scaleShowLabels: true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Sales prediction for the next six weeks',
+            fontSize: 25,
+        },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Sales'
+                    }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                    }
+            }]
+  }
+    },
+});
+
+
+// creates a random color each time its called
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+
+</script>

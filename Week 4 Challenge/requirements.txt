@@ -90,7 +90,7 @@ itemadapter==0.1.0
 itsdangerous==1.1.0
 jdcal==1.4
 jedi==0.13.2
-Jinja2==2.10
+Jinja2==2.11.3
 joblib==0.15.1
 json5==0.9.5
 jsonschema==2.6.0
